@@ -15,10 +15,14 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
-Route::get("/siswa", function () {
-    return view("siswa.index");
-});
+Route::get("/",            "SiswaController@index");
 
-Route::get("/create", function () {
-    return view("siswa.create");
-});
+Route::get("/siswa",            "SiswaController@index");
+Route::get("/siswa/create",     "SiswaController@create");
+Route::post("/siswa/create",     "SiswaController@store");
+Route::get("/siswa/{id}/edit",  "SiswaController@edit");
+Route::put("/siswa/{id}",       "SiswaController@update");
+Route::delete("/siswa/{id}",    "SiswaController@delete");
+
+Route::post("/siswa/import",    "SiswaController@import");
+Route::get("/siswa/cetak",     "SiswaController@cetak");

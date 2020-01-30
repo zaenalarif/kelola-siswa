@@ -26,13 +26,17 @@
           <div class="card-body">
             <div class="row center">
               <div class="col">
-                <a href="" class="btn btn-primary" >Import</a>
+                <form action="{{ url("/siswa/import") }}" method="post" enctype="multipart/form-data">
+                  <input type="file" name="file" id="">
+                  <button type="submit">Import</button>
+                  @csrf
+                </form>
               </div>
               <div class="col">
-                <a href="" class="btn btn-secondary" >Download</a>  
+                <a href="{{ url('siswa/cetak') }}" class="btn btn-secondary" >Download</a>  
               </div>
               <div class="col">
-                <a href="" class="btn btn-info">Tambah</a>
+                <a href="{{url('siswa/create')}}" class="btn btn-info">Tambah</a>
               </div>
             </div>
           </div>
@@ -56,50 +60,39 @@
                     </th>
                     <th>NISN</th>
                     <th>Nama</th>
-                    <th>Jenis Kelasmin</th>
+                    <th>Jenis Kelamin</th>
                     <th>Tempat lahir</th>
                     <th>tanggal lahir</th>
                     <th>Orang tua</th>
                     <th>Program</th>
                     <th>Mapel Pilihan</th>
+                    <th>Option</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>NISN</td>
-                    <td>Nama</td>
-                    <td>Jenis Kelasmin</td>
-                    <td>Tempat lahir</td>
-                    <td>tanggal lahir</td>
-                    <td>Orang tua</td>
-                    <td>Program</td>
-                    <td>Mapel Pilihan</td>
-                  </tr>
-
-                  <tr>
-                    <td>1</td>
-                    <td>NISN</td>
-                    <td>Nama</td>
-                    <td>Jenis Kelasmin</td>
-                    <td>Tempat lahir</td>
-                    <td>tanggal lahir</td>
-                    <td>Orang tua</td>
-                    <td>Program</td>
-                    <td>Mapel Pilihan</td>
-                  </tr>
-
-                  <tr>
-                    <td>1</td>
-                    <td>NISN</td>
-                    <td>Nama</td>
-                    <td>Jenis Kelasmin</td>
-                    <td>Tempat lahir</td>
-                    <td>tanggal lahir</td>
-                    <td>Orang tua</td>
-                    <td>Program</td>
-                    <td>Mapel Pilihan</td>
-                  </tr>
+                  @foreach ($siswas as $siswa)
+                    <tr>
+                      <td>{{ $loop->index }}</td>
+                      <td>{{ $siswa->nisn }}</td>
+                      <td>{{ $siswa->nama }}</td>
+                      <td>{{ $siswa->jenis_kelamin }}</td>
+                      <td>{{ $siswa->tempat_lahir }}</td>
+                      <td>{{ date("d-M-Y", strtotime($siswa->tanggal_lahir)) }}</td>
+                      <td>{{ $siswa->nama_ortu}}</td>
+                      <td>{{ $siswa->program }}</td>
+                      <td>{{ $siswa->mapel_pilihan }}</td>
+                      <td>
+                        <a href="{{ url("/siswa/$siswa->id/edit") }}" class="btn btn-sm btn-primary btn-action mr-1" data-toggle="tooltip" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                        <form action="{{ url("siswa/$siswa->id")}}" method="post" style="display: inline">
+                          <button type="submit" class="btn btn-sm btn-danger btn-action" >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                          @method("DELETE")
+                          @csrf
+                        </form>
+                      </td>
+                    </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>
@@ -122,4 +115,5 @@
         $('#table-1').DataTable();
     } );
   </script>
+
 @endsection
